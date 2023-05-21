@@ -8,4 +8,7 @@ Rails.application.routes.draw do
       resources :blogs, only: %i[index show create update]
     end
   end
+
+  mount Rswag::Ui::Engine => "/api-docs"
+  mount Rswag::Api::Engine => "/api-docs"
 end
