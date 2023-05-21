@@ -79,4 +79,5 @@ group :test do
   gem "webdrivers"
   gem "simplecov", require: false
   gem "shoulda-matchers", "~> 5.0"
+  gem "database_cleaner-active_record"
 end
