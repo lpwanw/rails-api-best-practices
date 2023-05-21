@@ -49,6 +49,44 @@ RSpec.configure do |config|
               content: { type: "string" }
             },
             required: %w[title content]
+          },
+          unknown_error: {
+            type: "object",
+            properties: {
+              success: { type: "boolean", default: false },
+              error_code: { type: "string", default: "UNKNOWN_ERROR" },
+              error_message: { type: "string", default: "Unknown error" },
+              errors: { type: "array" }
+            }
+          },
+          record_invalid_error: {
+            type: "object",
+            properties: {
+              success: { type: "boolean", default: false },
+              error_code: { type: "string", default: "RECORD_INVALID_ERROR" },
+              error_message: { type: "string", default: "Record invalid error" },
+              errors: {
+                type: "array",
+                items: {
+                  type: "object",
+                  properties: {
+                    id: { type: "integer" },
+                    model: { type: "string", example: "Blog" },
+                    attribute: { type: "string", example: "title" },
+                    full_message: { type: "string", example: "Title can't be blank" }
+                  }
+                }
+              }
+            }
+          },
+          record_not_found_error: {
+            type: "object",
+            properties: {
+              success: { type: "boolean", default: false },
+              error_code: { type: "string", default: "RECORD_NOT_FOUND_ERROR" },
+              error_message: { type: "string", default: "Record not found error" },
+              errors: { type: "array" }
+            }
           }
         }
       }

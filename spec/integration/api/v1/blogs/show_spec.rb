@@ -18,6 +18,16 @@ RSpec.describe "api/v1/blogs", type: :request do
           }
         xit
       end
+
+      response "404", "Not Found" do
+        schema "$ref" => "#/components/schemas/record_not_found_error"
+        xit
+      end
+
+      response "500", "Internal Server Error" do
+        schema "$ref" => "#/components/schemas/unknown_error"
+        xit
+      end
     end
   end
 end

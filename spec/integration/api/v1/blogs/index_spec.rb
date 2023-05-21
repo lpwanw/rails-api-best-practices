@@ -20,6 +20,11 @@ RSpec.describe "api/v1/blogs", type: :request do
           }
         xit
       end
+
+      response "500", "Internal Server Error" do
+        schema "$ref" => "#/components/schemas/unknown_error"
+        xit
+      end
     end
   end
 end

@@ -22,6 +22,18 @@ paths:
                     type: boolean
                   data:
                     "$ref": "#/components/schemas/blog_response"
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/record_invalid_error"
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/unknown_error"
       requestBody:
         content:
           application/json:
@@ -45,6 +57,12 @@ paths:
                     type: array
                     items:
                       "$ref": "#/components/schemas/blog_response"
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/unknown_error"
   "/api/v1/blogs/{id}":
     get:
       summary: Get blog
@@ -68,6 +86,18 @@ paths:
                     type: boolean
                   data:
                     "$ref": "#/components/schemas/blog_response"
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/record_not_found_error"
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/unknown_error"
     put:
       summary: Update blog
       tags:
@@ -90,6 +120,24 @@ paths:
                     type: boolean
                   data:
                     "$ref": "#/components/schemas/blog_response"
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/record_not_found_error"
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/record_invalid_error"
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/unknown_error"
       requestBody:
         content:
           application/json:
@@ -121,3 +169,59 @@ components:
       required:
       - title
       - content
+    unknown_error:
+      type: object
+      properties:
+        success:
+          type: boolean
+          default: false
+        error_code:
+          type: string
+          default: UNKNOWN_ERROR
+        error_message:
+          type: string
+          default: Unknown error
+        errors:
+          type: array
+    record_invalid_error:
+      type: object
+      properties:
+        success:
+          type: boolean
+          default: false
+        error_code:
+          type: string
+          default: RECORD_INVALID_ERROR
+        error_message:
+          type: string
+          default: Record invalid error
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              model:
+                type: string
+                example: Blog
+              attribute:
+                type: string
+                example: title
+              full_message:
+                type: string
+                example: Title can't be blank
+    record_not_found_error:
+      type: object
+      properties:
+        success:
+          type: boolean
+          default: false
+        error_code:
+          type: string
+          default: RECORD_NOT_FOUND_ERROR
+        error_message:
+          type: string
+          default: Record not found error
+        errors:
+          type: array
