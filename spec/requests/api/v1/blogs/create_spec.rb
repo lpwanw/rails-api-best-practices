@@ -28,5 +28,18 @@ RSpec.describe Api::V1::BlogsController, type: :request do
     context "when change Blog Count" do
       it { expect { subject }.to change { Blog.count }.by 1 }
     end
+
+    context "when invalid record" do
+      let(:params) do
+        {
+          blog: {
+            title: "",
+            content: ""
+          }
+        }
+      end
+
+      it_behaves_like "record_invalid", "Validation failed: Title can't be blank, Content can't be blank"
+    end
   end
 end
