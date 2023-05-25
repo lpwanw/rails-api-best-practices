@@ -1,6 +1,10 @@
 require "rails_helper"
 
 RSpec.describe User, type: :model do
+  describe "Associations" do
+    it { is_expected.to have_many(:refresh_tokens).dependent(:destroy) }
+  end
+
   describe "Validations" do
     subject { build :user }
 
