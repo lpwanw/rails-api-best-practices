@@ -14,4 +14,18 @@ RSpec.describe User, type: :model do
 
     it { is_expected.to validate_length_of(:password).is_at_least(6).is_at_most(128) }
   end
+
+  describe "Methods" do
+    describe "#auth_payload" do
+      subject { build :user }
+
+      it "returns a hash" do
+        expect(subject.auth_payload).to be_a Hash
+      end
+
+      it { expect(subject.auth_payload[:sub]).to eq subject.id }
+      it { expect(subject.auth_payload[:user_name]).to eq subject.user_name }
+      it { expect(subject.auth_payload[:exp]).to be_a Integer }
+    end
+  end
 end

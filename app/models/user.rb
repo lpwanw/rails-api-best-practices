@@ -8,4 +8,12 @@ class User < ApplicationRecord
   validates :user_name, uniqueness: { case_sensitive: false }
 
   validates :password, length: { minimum: 6, maximum: 128 }
+
+  def auth_payload
+    {
+      sub: id,
+      user_name: user_name,
+      exp: Time.now.to_i + 4 * 3600
+    }
+  end
 end
