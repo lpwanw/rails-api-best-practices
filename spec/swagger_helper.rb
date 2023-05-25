@@ -87,6 +87,15 @@ RSpec.configure do |config|
               error_message: { type: "string", default: "Record not found error" },
               errors: { type: "array" }
             }
+          },
+          unauthorized: {
+            type: "object",
+            properties: {
+              success: { type: "boolean", default: false },
+              error_code: { type: "string", default: "UNAUTHORIZED_ERROR" },
+              error_message: { type: "string", default: "Invalid credentials" },
+              errors: { type: "array" }
+            }
           }
         }
       }

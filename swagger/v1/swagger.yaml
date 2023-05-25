@@ -38,7 +38,10 @@ paths:
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/blog_request"
+              type: object
+              properties:
+                blog:
+                  "$ref": "#/components/schemas/blog_request"
     get:
       summary: Get all blogs
       tags:
@@ -142,7 +145,63 @@ paths:
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/blog_request"
+              type: object
+              properties:
+                blog:
+                  "$ref": "#/components/schemas/blog_request"
+  "/api/v1/users/sign_in":
+    post:
+      summary: Sign In
+      tags:
+      - Users
+      parameters: []
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      access_token:
+                        type: string
+                        example: access_token
+                        description: JWT token
+                      refresh_token:
+                        type: string
+                        example: refresh_token
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/record_invalid_error"
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/unknown_error"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_name:
+                  type: string
+                  example: user_name
+                password:
+                  type: string
+                  example: password
+              required:
+              - user_name
+              - password
 servers:
 - url: https://{defaultHost}
   variables:
@@ -223,5 +282,19 @@ components:
         error_message:
           type: string
           default: Record not found error
+        errors:
+          type: array
+    unauthorized:
+      type: object
+      properties:
+        success:
+          type: boolean
+          default: false
+        error_code:
+          type: string
+          default: UNAUTHORIZED_ERROR
+        error_message:
+          type: string
+          default: Invalid credentials
         errors:
           type: array

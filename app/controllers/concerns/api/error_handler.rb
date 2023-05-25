@@ -5,6 +5,7 @@ module Api::ErrorHandler
     rescue_from StandardError, with: :unknown_error # 500
     rescue_from ActiveRecord::RecordInvalid, with: :record_invalid # 422
     rescue_from ActiveRecord::RecordNotFound, with: :record_not_found # 404
+    rescue_from Api::Error::UnauthorizedError, with: :unauthorized # 401
   end
 
   private
@@ -16,6 +17,11 @@ module Api::ErrorHandler
 
   def record_invalid(error)
     error = Api::Error::RecordInvalidError.new(error)
+    render_error(error)
+  end
+
+  def unauthorized(error)
+    error = Api::Error::UnauthorizedError.new(error)
     render_error(error)
   end
 

@@ -6,6 +6,11 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :blogs, only: %i[index show create update]
+      resources :users, only: [] do
+        collection do
+          post :sign_in
+        end
+      end
     end
   end
 

@@ -6,8 +6,14 @@ RSpec.describe "api/v1/blogs", type: :request do
       tags "Blogs"
       consumes "application/json"
       produces "application/json"
+
       parameter name: :blog, in: :body, schema: {
-        "$ref" => "#/components/schemas/blog_request"
+        type: :object,
+        properties: {
+          blog: {
+            "$ref" => "#/components/schemas/blog_request"
+          }
+        }
       }
 
       response "201", "Success" do
