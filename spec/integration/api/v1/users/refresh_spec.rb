@@ -1,8 +1,8 @@
 require "swagger_helper"
 
-RSpec.describe "api/v1/users/sign_in", type: :request do
-  path "/api/v1/users/sign_in" do
-    post "Sign In" do
+RSpec.describe "api/v1/users/refresh", type: :request do
+  path "/api/v1/users/refresh" do
+    post "Refresh Token" do
       tags "Users"
       consumes "application/json"
       produces "application/json"
@@ -10,9 +10,8 @@ RSpec.describe "api/v1/users/sign_in", type: :request do
       parameter name: :user, in: :body, schema: {
         type: :object,
         properties: {
-          user_name: { type: :string, example: "user_name" },
-          password: { type: :string, example: "password" }
-        }, required: %w[user_name password]
+          refresh_token: { type: :string, example: "refresh_token" }
+        }, required: %w[refresh_token]
       }
 
       response "200", "Success" do
@@ -24,7 +23,7 @@ RSpec.describe "api/v1/users/sign_in", type: :request do
                    properties: {
                      access_token: {
                        type: :string, example: "access_token",
-                       description: "JWT token, expires in 4 days"
+                       description: "JWT token"
                      },
                      refresh_token: { type: :string, example: "refresh_token" }
                    }

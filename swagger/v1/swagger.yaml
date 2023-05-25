@@ -149,9 +149,9 @@ paths:
               properties:
                 blog:
                   "$ref": "#/components/schemas/blog_request"
-  "/api/v1/users/sign_in":
+  "/api/v1/users/refresh":
     post:
-      summary: Sign In
+      summary: Refresh Token
       tags:
       - Users
       parameters: []
@@ -180,7 +180,56 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/record_invalid_error"
+                "$ref": "#/components/schemas/unauthorized_error"
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/unknown_error"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                refresh_token:
+                  type: string
+                  example: refresh_token
+              required:
+              - refresh_token
+  "/api/v1/users/sign_in":
+    post:
+      summary: Sign In
+      tags:
+      - Users
+      parameters: []
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      access_token:
+                        type: string
+                        example: access_token
+                        description: JWT token, expires in 4 days
+                      refresh_token:
+                        type: string
+                        example: refresh_token
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/unauthorized_error"
         '500':
           description: Internal Server Error
           content:
@@ -284,7 +333,7 @@ components:
           default: Record not found error
         errors:
           type: array
-    unauthorized:
+    unauthorized_error:
       type: object
       properties:
         success:

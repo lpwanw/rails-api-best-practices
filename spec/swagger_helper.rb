@@ -88,7 +88,7 @@ RSpec.configure do |config|
               errors: { type: "array" }
             }
           },
-          unauthorized: {
+          unauthorized_error: {
             type: "object",
             properties: {
               success: { type: "boolean", default: false },

@@ -1,15 +1,15 @@
 require "rails_helper"
 
 RSpec.describe Api::V1::UsersController, type: :request do
-  describe "POST sign in" do
+  describe "POST refresh" do
     subject { post url, params: params, as: :json }
 
-    let!(:user) { create :user }
-    let(:url) { "/api/v1/users/sign_in" }
+    let!(:refresh_token) { create :refresh_token }
+    let(:id) { blog.id }
+    let(:url) { "/api/v1/users/refresh" }
     let(:params) do
       {
-        user_name: user.user_name,
-        password: "Aa@123456"
+        refresh_token: refresh_token.token,
       }
     end
 
@@ -21,11 +21,19 @@ RSpec.describe Api::V1::UsersController, type: :request do
       it { expect(response_body[:data]).to include :access_token }
       it { expect(response_body[:data]).to include :refresh_token }
     end
+    context "when it destroys the refresh token" do
+      before { subject }
+
+      it { expect(RefreshToken.exists?(id: refresh_token.id)).to be false }
+    end
 
     context "when invalid credentials" do
-      let(:params) {}
+      let(:params) do
+        {
+        }
+      end
 
-      it_behaves_like "unauthorized", "Invalid credentials"
+      it_behaves_like "unauthorized", "Invalid refresh token"
     end
   end
 end

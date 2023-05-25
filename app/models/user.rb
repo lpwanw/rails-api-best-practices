@@ -16,4 +16,11 @@ class User < ApplicationRecord
       exp: Time.now.to_i + 4 * 3600
     }
   end
+
+  def auth_token
+    {
+      access_token: Auth.issue(auth_payload),
+      refresh_token: refresh_tokens.create!.token
+    }
+  end
 end
