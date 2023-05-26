@@ -1,6 +1,6 @@
 class Api::V1::UsersController < Api::V1::BaseUsersController
-  skip_before_action :authenticate_user!, only: %i[sign_in refresh]
-  before_action :authenticate_refresh_token, only: :refresh
+  skip_before_action :authenticate_user!, only: %i[sign_in refresh revoke]
+  before_action :authenticate_refresh_token!, only: %i[refresh revoke]
 
   def me
     json_response UserSerializer.new(current_user)
@@ -22,9 +22,15 @@ class Api::V1::UsersController < Api::V1::BaseUsersController
     end
   end
 
+  def revoke
+    ActiveRecord::Base.transaction do
+      @token.destroy!
+    end
+  end
+
   private
 
-  def authenticate_refresh_token
+  def authenticate_refresh_token!
     @token = RefreshToken.find_by(token: params[:refresh_token])
     return if @token
 

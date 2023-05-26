@@ -234,6 +234,36 @@ paths:
                   example: refresh_token
               required:
               - refresh_token
+  "/api/v1/users/revoke":
+    post:
+      summary: Refresh Token
+      tags:
+      - Users
+      parameters: []
+      responses:
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/unauthorized_error"
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/unknown_error"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                refresh_token:
+                  type: string
+                  example: refresh_token
+              required:
+              - refresh_token
   "/api/v1/users/sign_in":
     post:
       summary: Sign In

@@ -9,7 +9,7 @@ Rails.application.routes.draw do
       resources :users, only: [] do
         collection do
           get :me
-          post :sign_in, :refresh
+          post :sign_in, :refresh, :revoke
         end
       end
     end
