@@ -5,7 +5,6 @@ RSpec.describe Api::V1::UsersController, type: :request do
     subject { post url, params: params, as: :json }
 
     let!(:refresh_token) { create :refresh_token }
-    let(:id) { blog.id }
     let(:url) { "/api/v1/users/refresh" }
     let(:params) do
       {

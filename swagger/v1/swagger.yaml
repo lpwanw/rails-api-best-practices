@@ -149,6 +149,42 @@ paths:
               properties:
                 blog:
                   "$ref": "#/components/schemas/blog_request"
+  "/api/v1/users/me":
+    get:
+      summary: User information
+      tags:
+      - Users
+      security:
+      - bearer_auth: []
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      user_name:
+                        type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/unauthorized_error"
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/unknown_error"
   "/api/v1/users/refresh":
     post:
       summary: Refresh Token
@@ -252,11 +288,16 @@ paths:
               - user_name
               - password
 servers:
-- url: https://{defaultHost}
+- url: http://{defaultHost}
   variables:
     defaultHost:
-      default: www.example.com
+      default: localhost:3000
 components:
+  securitySchemes:
+    bearer_auth:
+      type: apiKey
+      name: Authorization
+      in: header
   schemas:
     blog_response:
       type: object

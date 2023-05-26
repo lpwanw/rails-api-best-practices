@@ -8,6 +8,7 @@ Rails.application.routes.draw do
       resources :blogs, only: %i[index show create update]
       resources :users, only: [] do
         collection do
+          get :me
           post :sign_in, :refresh
         end
       end
