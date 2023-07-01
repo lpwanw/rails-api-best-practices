@@ -14,6 +14,19 @@ RSpec.configure do |config|
   # By default, the operations defined in spec files are added to the first
   # document below. You can override this behavior by adding a swagger_doc tag to the
   # the root example_group in your specs, e.g. describe "...", swagger_doc: "v2/swagger.json"
+  schemas = {}
+
+  %w[models errors].each do |schema_type|
+    Dir[Rails.root.join("swagger/schemas/#{schema_type}/**/*.json")].each do |f|
+      file = File.read(f)
+      json = JSON.parse(file)
+      error_name = f.gsub(Rails.root.join("swagger/schemas/#{schema_type}/").to_s, "")
+                    .gsub(".json", "")
+                    .tr("/", "_")
+      schemas.merge!({ error_name => json })
+    end
+  end
+
   config.swagger_docs = {
     "v1/swagger.yaml" => {
       openapi: "3.0.1",
@@ -40,71 +53,7 @@ RSpec.configure do |config|
             in: :header
           }
         },
-        schemas: {
-          blog_response: {
-            type: "object",
-            properties: {
-              id: { type: "integer" },
-              title: { type: "string" },
-              content: { type: "string" }
-            }
-          },
-          blog_request: {
-            type: "object",
-            properties: {
-              title: { type: "string" },
-              content: { type: "string" }
-            },
-            required: %w[title content]
-          },
-          unknown_error: {
-            type: "object",
-            properties: {
-              success: { type: "boolean", default: false },
-              error_code: { type: "string", default: "UNKNOWN_ERROR" },
-              error_message: { type: "string", default: "Unknown error" },
-              errors: { type: "array" }
-            }
-          },
-          record_invalid_error: {
-            type: "object",
-            properties: {
-              success: { type: "boolean", default: false },
-              error_code: { type: "string", default: "RECORD_INVALID_ERROR" },
-              error_message: { type: "string", default: "Record invalid error" },
-              errors: {
-                type: "array",
-                items: {
-                  type: "object",
-                  properties: {
-                    id: { type: "integer" },
-                    model: { type: "string", example: "Blog" },
-                    attribute: { type: "string", example: "title" },
-                    full_message: { type: "string", example: "Title can't be blank" }
-                  }
-                }
-              }
-            }
-          },
-          record_not_found_error: {
-            type: "object",
-            properties: {
-              success: { type: "boolean", default: false },
-              error_code: { type: "string", default: "RECORD_NOT_FOUND_ERROR" },
-              error_message: { type: "string", default: "Record not found error" },
-              errors: { type: "array" }
-            }
-          },
-          unauthorized_error: {
-            type: "object",
-            properties: {
-              success: { type: "boolean", default: false },
-              error_code: { type: "string", default: "UNAUTHORIZED_ERROR" },
-              error_message: { type: "string", default: "Invalid credentials" },
-              errors: { type: "array" }
-            }
-          }
-        }
+        schemas: schemas
       }
     }
   }
