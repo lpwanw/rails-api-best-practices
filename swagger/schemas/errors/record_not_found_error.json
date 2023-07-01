@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "properties": {
+    "success": { "type": "boolean", "default": false },
+    "error_code": { "type": "string", "default": "RECORD_NOT_FOUND_ERROR" },
+    "error_message": { "type": "string", "default": "Record not found error" },
+    "errors": { "type": "array" }
+  }
+}

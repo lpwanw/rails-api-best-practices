@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "properties": {
+    "success": { "type": "boolean", "default": false },
+    "error_code": { "type": "string", "default": "UNKNOWN_ERROR" },
+    "error_message": { "type": "string", "default": "Unknown error" },
+    "errors": { "type": "array" }
+  }
+}

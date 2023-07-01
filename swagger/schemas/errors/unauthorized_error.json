@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "properties": {
+    "success": { "type": "boolean", "default": false },
+    "error_code": { "type": "string", "default": "UNAUTHORIZED_ERROR" },
+    "error_message": { "type": "string", "default": "Invalid credentials" },
+    "errors": { "type": "array" }
+  }
+}

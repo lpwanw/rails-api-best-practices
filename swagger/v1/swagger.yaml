@@ -329,15 +329,6 @@ components:
       name: Authorization
       in: header
   schemas:
-    blog_response:
-      type: object
-      properties:
-        id:
-          type: integer
-        title:
-          type: string
-        content:
-          type: string
     blog_request:
       type: object
       properties:
@@ -348,20 +339,15 @@ components:
       required:
       - title
       - content
-    unknown_error:
+    blog_response:
       type: object
       properties:
-        success:
-          type: boolean
-          default: false
-        error_code:
+        id:
+          type: integer
+        title:
           type: string
-          default: UNKNOWN_ERROR
-        error_message:
+        content:
           type: string
-          default: Unknown error
-        errors:
-          type: array
     record_invalid_error:
       type: object
       properties:
@@ -416,5 +402,19 @@ components:
         error_message:
           type: string
           default: Invalid credentials
+        errors:
+          type: array
+    unknown_error:
+      type: object
+      properties:
+        success:
+          type: boolean
+          default: false
+        error_code:
+          type: string
+          default: UNKNOWN_ERROR
+        error_message:
+          type: string
+          default: Unknown error
         errors:
           type: array
